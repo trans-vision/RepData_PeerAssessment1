@@ -7,14 +7,55 @@ output:
 
 
 ## Loading and preprocessing the data
+```{r}
+library(dplyr)
+library(ggplot2)
+setwd("~/Documents/ReproducibleResearch/Project1")
+activity <- read.csv("activity.csv")
+dt_activity <- tbl_df(activity)#[complete.cases(activity),])
 
+```
 
 
 ## What is mean total number of steps taken per day?
+The total number of steps taken per day is calculated.
+```{r totalstepsperday}
+totalStepsPerDay <- group_by(dt_activity, date) %>% summarise(Total=sum(steps))
+```
+
+A histogram of total number of days is plotted. 
+```{r histogram}
+hist(totalStepsPerDay$Total)
+```
+
+The mean and median total number of steps taken per day are computed.
+
+```{r}
+mean(totalStepsPerDay$Total)
+median(totalStepsPerDay$Total)
+```
+
+
 
 
 
 ## What is the average daily activity pattern?
+```{r}
+aveStepsPattern <- group_by(dt_activity, interval) %>% summarise(Ave=mean(steps))
+p <- qplot(interval, Ave, data=aveStepsPattern, geom="line") +
+    ggtitle("Average Daily Activity Pattern") + 
+    xlab("Interval") + ylab("Ave Num Steps Taken") +
+    geom_vline(xintercept = aveStepsPattern[which.max(aveStepsPattern$Ave),]$interval, 
+               color="red", linetype="dotted") #+ 
+#    geom_text(aes(aveStepsPattern[which.max(aveStepsPattern$Ave),]$interval, 
+#                  aveStepsPattern[which.max(aveStepsPattern$Ave),]$Ave, label="Max"))
+print(p)
+```
+
+
+```{r}
+aveStepsPattern[which.max(aveStepsPattern$Ave),]$interval
+```
 
 
 
