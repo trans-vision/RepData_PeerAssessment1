@@ -7,12 +7,13 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r}
+Packages dplyr and ggplot2 were used for data manipulation and plotting respectively.
+```{r message=FALSE}
 library(dplyr)
 library(ggplot2)
 setwd("~/Documents/ReproducibleResearch/Project1")
 activity <- read.csv("activity.csv")
-dt_activity <- tbl_df(activity)#[complete.cases(activity),])
+dt_activity <- tbl_df(activity[complete.cases(activity),])
 
 ```
 
@@ -60,7 +61,9 @@ aveStepsPattern[which.max(aveStepsPattern$Ave),]$interval
 
 
 ## Imputing missing values
-
-
+The number of rows with missing values is:
+```{r}
+sum(complete.cases(activity))
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
